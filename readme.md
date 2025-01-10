@@ -18,7 +18,7 @@
 ## 安装与运行
 1. 克隆项目到本地：
    ```bash
-   git clone https://github.com/yourusername/yourproject.git
+   git clone https://github.com/summersun2023/cy2025.git
    ```
 2. 进入项目目录：
    ```bash
