@@ -22,7 +22,7 @@ function startGame() {
 
 function resetGame() {
     clearInterval(timer);
-    timeLeft = 60; // 固定60秒倒计时
+    timeLeft = 60;
     userWord = '';
     document.getElementById('time').textContent = timeLeft;
     document.getElementById('points').textContent = score;
@@ -41,7 +41,7 @@ function updateTimer() {
 }
 
 function initPuzzle() {
-    currentWord = idioms[Math.floor(Math.random() * idioms.length)]; // 随机选择成语
+    currentWord = idioms[Math.floor(Math.random() * idioms.length)];
     const shuffled = shuffleArray(currentWord.split(''));
     const puzzleContainer = document.getElementById('puzzle-container');
     
@@ -122,20 +122,19 @@ function checkWord() {
     if (userWord === currentWord) {
         clearInterval(timer);
         score += 10;
-        timeLeft += 5; // 每答对一个成语增加5秒
+        timeLeft += 5;
         document.getElementById('points').textContent = score;
         document.getElementById('time').textContent = timeLeft;
 
-        // 延迟显示成功提示
         setTimeout(() => {
             alert('恭喜！您拼出了正确的成语！');
             nextLevel();
-        }, 500); // 延迟500毫秒
+        }, 500);
     }
 }
 
 function nextLevel() {
-    startGame(); // 直接开始下一个随机成语
+    startGame();
 }
 
 function skipWord() {
