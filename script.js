@@ -48,6 +48,8 @@ let userWord = '';
 
 // 开始游戏函数
 function startGame() {
+    // 隐藏开始游戏按钮
+    document.getElementById('start-button').style.display = 'none';
     resetGame();
     timer = setInterval(updateTimer, 1000);
     initPuzzle();
@@ -71,7 +73,12 @@ function updateTimer() {
         document.getElementById('time').textContent = timeLeft;
     } else {
         clearInterval(timer);
-        alert('恭喜您！您的得分是：' + score);
+        if (score === 0) {
+            alert('继续努力，再玩一次吧！');
+        } else {
+            alert('恭喜您！您的得分是：' + score);
+        }
+        location.reload(); // 自动刷新页面
     }
 }
 
@@ -80,7 +87,8 @@ function initPuzzle() {
     currentWord = idioms[Math.floor(Math.random() * idioms.length)];
     const shuffled = shuffleArray(currentWord.split(''));
     const puzzleContainer = document.getElementById('puzzle-container');
-    
+    puzzleContainer.innerHTML = '';
+
     shuffled.forEach(letter => {
         const letterElement = document.createElement('div');
         letterElement.textContent = letter;
@@ -113,6 +121,7 @@ let touchStartY = 0;
 function dragStart(event) {
     draggedElement = event.target;
     event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', null); // 解决某些浏览器的拖动问题
 }
 
 // 拖动经过事件处理函数
@@ -172,7 +181,7 @@ function checkWord() {
         document.getElementById('time').textContent = timeLeft;
 
         setTimeout(() => {
-            alert('恭喜！您拼出了正确的成语！');
+            alert('答对了！当前分数：' + score);
             nextLevel();
         }, 500);
     }
@@ -188,10 +197,27 @@ function skipWord() {
     if (skipsLeft > 0) {
         skipsLeft--;
         document.getElementById('skip-count').textContent = skipsLeft;
-        nextLevel();
-    } else {
-        alert('跳过次数已用完！');
+        // 当跳过次数用完时禁用按钮
+        if (skipsLeft === 0) {
+            const skipButton = document.getElementById('skip-button');
+            skipButton.disabled = true;
+            skipButton.style.backgroundColor = '#ccc';
+            skipButton.style.cursor = 'not-allowed';
+        }
+        nextLevel(); // 直接进入下一关
     }
+}
+
+// 在开始游戏时显示跳过按钮
+document.getElementById('skip-button').style.display = 'none';
+function startGame() {
+    // 显示跳过按钮
+    document.getElementById('skip-button').style.display = 'block';
+    // 隐藏开始游戏按钮
+    document.getElementById('start-button').style.display = 'none';
+    resetGame();
+    timer = setInterval(updateTimer, 1000);
+    initPuzzle();
 }
 
 // 这里可以添加更多的拖放逻辑和拼图完成检测 
