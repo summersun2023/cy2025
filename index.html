@@ -13,29 +13,53 @@
     <div id="game-container">
         <h1>成语大全2025</h1>
         <div id="puzzle-container"></div>
-        <div id="controls">
-            <button id="start-button">开始游戏</button>
-            <button id="skip-button">跳过</button>
-            <div id="timer">时间: <span id="time">60</span> 秒</div>
+        <div id="game-info">
+            <div class="timer-container">
+                <div id="timer">时间: <span id="time">60</span> 秒</div>
+                <div class="progress-bar">
+                    <div id="time-progress"></div>
+                </div>
+            </div>
             <div id="score">得分: <span id="points">0</span></div>
-            <div id="skips">跳过次数: <span id="skip-count">3</span></div>
         </div>
+        
+        <div class="game-controls">
+            <div class="control-item">
+                <div id="skips">剩余跳过: <span id="skip-count">3</span></div>
+                <button id="skip-button">跳过</button>
+            </div>
+            <div class="control-item">
+                <div id="hints">剩余提示: <span id="hint-count">5</span></div>
+                <button id="hint-button">提示</button>
+            </div>
+        </div>
+
+        <button id="start-button">开始游戏</button>
+        
         <div id="instructions">
             <h2>游戏玩法：</h2>
-            <p>在60秒内，通过拖放字块拼出正确的成语，每答对一个增加5s，每次游戏有3次跳过机会。</p>
-            <button id="share-button" onclick="shareGame()">分享给好友</button>
+            <p>在60秒内，通过拖放字块拼出正确的成语，每答对一次增加5秒，每次游戏有3次跳过和5次提示机会。</p>
         </div>
     </div>
     <script src="script.js"></script>
     <script>
-        function shareGame() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                alert('链接已复制到剪贴板：' + url);
-            }).catch(err => {
-                console.error('复制失败：', err);
+        let score = 0; // 在全局作用域中定义score变量
+        document.addEventListener('DOMContentLoaded', function() {
+            // 监听分数变化
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.target.id === 'points') {
+                        score = parseInt(mutation.target.textContent);
+                    }
+                });
             });
-        }
+
+            observer.observe(document.getElementById('points'), {
+                childList: true,
+                characterData: true,
+                subtree: true
+            });
+        });
     </script>
 </body>
 </html> 
